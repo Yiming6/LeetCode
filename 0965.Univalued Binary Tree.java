@@ -14,6 +14,9 @@
  * }
  */
 class Solution {
+	/*
+		Recursively traversal binary tree. Top to bottom.
+	*/
     public boolean isUnivalTree(TreeNode root) {
         if (root == null) return true;
         if (root.left == null && root.right == null) return true;

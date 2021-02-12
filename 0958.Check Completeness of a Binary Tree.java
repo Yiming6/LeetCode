@@ -14,6 +14,9 @@
  * }
  */
 class Solution {
+    /*
+        Level order traversal. Check completeness of last level and others separately.
+    */
     public boolean isCompleteTree(TreeNode root) {
         if (root == null) return false;
         if (root.left == null && root.right == null) return true;

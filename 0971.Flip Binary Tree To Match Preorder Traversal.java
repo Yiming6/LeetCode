@@ -14,6 +14,9 @@
  * }
  */
 class Solution {
+    /*
+        dfs. Global incremental index of preorder array should match preorder traversal.
+    */
     
     int i = 0;
     List<Integer> ans = new ArrayList<>();
