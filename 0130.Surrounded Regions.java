@@ -1,7 +1,7 @@
 class Solution {
     /*
         dfs, traversal graph. When we found a 'O', check whether this region is surrounded,
-        more specificly, checking whether this region reached margins. If it is, flip 
+        more specifically, checking whether this region reached margins. If it is, flip 
         this region.
         Note that return after finishing traversalling one region. 
         O(mn).
@@ -33,7 +33,11 @@ class Solution {
         for (int[] dir : dirs) {
             int y = i + dir[0], x = j + dir[1];
             
-            if (y < 0 || y >= m || x < 0 || x >= n) {surrounded = false; continue;}
+            if (y < 0 || y >= m || x < 0 || x >= n) {
+                surrounded = false;
+                continue;
+            }
+            
             if (board[y][x] == 'O' && !visited[y][x]) {
                 if (!surrounded(board, visited, y, x)) surrounded = false;
             }
