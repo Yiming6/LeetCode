@@ -12,28 +12,28 @@ class Solution {
         List<Integer> list = new ArrayList<>();
         List<Integer>[] graph = new ArrayList[numCourses];
         
-        // -1: processing, 0: unvisited, 1:processed
+        for (int i = 0; i < numCourses; i++) graph[i] = new ArrayList<>();
+        for (int[] prerequisite : prerequisites) {
+            graph[prerequisite[1]].add(prerequisite[0]);
+        }
+        
+        // 0: unvisited, -1: processing, 1: processed
         int[] visited = new int[numCourses];
         
-        for (int i = 0; i < numCourses; i++) graph[i] = new ArrayList<>();
-        
-        for (int[] prerequisite : prerequisites) graph[prerequisite[1]].add(prerequisite[0]);
-        
         for (int i = 0; i < numCourses; i++) {
-            if (visited[i] == 0 && hasCycle(graph, visited, i, list)) return new int[0];
+            if (hasCycle(graph, visited, i, list)) return new int[0];
         }
         
         Collections.reverse(list);
-        
         int[] ans = new int[numCourses];
+        
         for (int i = 0; i < numCourses; i++) ans[i] = list.get(i);
         
         return ans;
     }
     
     private boolean hasCycle(List<Integer>[] graph, int[] visited, int curr, List<Integer> list) {
-        if (visited[curr] == -1) return true;
-        if (visited[curr] == 1) return false;
+        if (visited[curr] != 0) return visited[curr] == -1;
         
         visited[curr] = -1;
         
@@ -43,7 +43,7 @@ class Solution {
         
         visited[curr] = 1;
         list.add(curr);
-        
+
         return false;
     }
 }
