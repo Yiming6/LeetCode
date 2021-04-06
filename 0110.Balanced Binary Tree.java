@@ -18,18 +18,20 @@ class Solution {
         Depth problem. Bottom to top.
         If left subtree or right subtree is not balanced, return false;
         Otherwise check current root is balanced or not.
+        O(n)
     */
     public boolean isBalanced(TreeNode root) {
         if (root == null) return true;
         
-        boolean left = isBalanced(root.left), right = isBalanced(root.right);
+        boolean left = isBalanced(root.left);
+        boolean right = isBalanced(root.right);
         
-        if (!left || !right) return false;
-        
-        return Math.abs(helper(root.left) - helper(root.right)) <= 1;
+        return left && right && Math.abs(helper(root.left) - helper(root.right)) <= 1;
     }
     
     private int helper(TreeNode root) {
-        return root == null ? 0 : Math.max(helper(root.left), helper(root.right)) + 1;
+        if (root == null) return 0;
+        return Math.max(helper(root.left), helper(root.right)) + 1;
     }
+    
 }
