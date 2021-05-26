@@ -1,33 +1,34 @@
 class TimeMap {
-    /*
-        Two maps. Binary search. Fixed target, find one that no larger than target.
-        Right pointer -1 is the one that no larger than target.
-    */
+    
+    Map<String, List<Pair<Integer, String>>> map;
 
-    Map<String, List<Integer>> kToT;
-    Map<Integer, String> tToV;
     /** Initialize your data structure here. */
     public TimeMap() {
-        kToT = new HashMap<>();
-        tToV = new HashMap<>();
+        map = new HashMap<>();
     }
     
     public void set(String key, String value, int timestamp) {
-        if (!kToT.containsKey(key)) kToT.put(key, new ArrayList<>());
-        kToT.get(key).add(timestamp);
-        tToV.put(timestamp, value);
+        if (timestamp == 0) return;
+        
+        if (!map.containsKey(key)) map.put(key, new ArrayList<>());
+        
+        map.get(key).add(new Pair<>(timestamp, value));
     }
     
     public String get(String key, int timestamp) {
-        List<Integer> timestamps = kToT.get(key);
-        int left = 0, right = timestamps.size();
+        if (timestamp == 0) return new String();
+        
+        List<Pair<Integer, String>> list = map.get(key);
+        
+        int left = 0, right = list.size();
         while (left < right) {
             int mid = left + (right - left) / 2;
-            if (timestamps.get(mid) <= timestamp) left = mid + 1;
+            
+            if (list.get(mid).getKey() <= timestamp) left = mid + 1;
             else right = mid;
         }
         
-        return right == 0 ? "" : tToV.get(timestamps.get(right - 1));
+        return right == 0 ? "" : list.get(right - 1).getValue();
     }
 }
 
