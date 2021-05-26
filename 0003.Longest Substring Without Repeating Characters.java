@@ -1,23 +1,22 @@
 class Solution {
-    /*
-        Using a array to record the last positon of character. if current character has appeared before, move
-        left pointer to that position. Update last one position for each characters.
-        O(n).
-    */
     public int lengthOfLongestSubstring(String s) {
-        if (s.length() <= 1) return s.length();
+        if (s.length() == 0 || s.length() == 1) return s.length();
         
-        int left = -1, ans = 0;
-        int[] counter = new int[128];
+        int i = 0, left = -1, ans = 1;
+        int[] position = new int[128];
         
-        Arrays.fill(counter, -1);
+        Arrays.fill(position, -1);
         
-        for (int i = 0 ; i < s.length(); i++) {
-            left = Math.max(left, counter[s.charAt(i)]);
+        while (i < s.length()) {
+            char curr = s.charAt(i);
             
-            counter[s.charAt(i)] = i;
+            left = Math.max(left, position[curr]);
             
             ans = Math.max(ans, i - left);
+            
+            position[curr] = i;
+            
+            i++;
         }
         
         return ans;
