@@ -1,27 +1,23 @@
 class Solution {
-    /*
-     dp. Palindromic substring. Range traversal.
-    */
     public String longestPalindrome(String s) {
-        if (s.length() == 0 || s.length() == 1) return s;
+        if (s.length() <= 1) return s;
         
-        int n = s.length(), start = 0, len = 0;
+        int n = s.length();
+        String ans = s.substring(0, 1);
         boolean[][] dp = new boolean[n][n];
         
         for (int i = 0; i < n; i++) {
             dp[i][i] = true;
-
-            for (int j = i; j >= 0; j--) {
-                if (i - j == 1) dp[j][i] = s.charAt(i) == s.charAt(j);
-                else if (i - j > 1) dp[j][i] = dp[j + 1][i - 1] && s.charAt(i) == s.charAt(j);
+            for (int j = i - 1; j >= 0; j--) {
+                if (i - j == 1) dp[j][i] = s.charAt(j) == s.charAt(i);
+                else dp[j][i] = dp[j + 1][i - 1] && s.charAt(j) == s.charAt(i);
                 
-                if (dp[j][i] && i - j + 1 > len) {
-                    start = j;
-                    len = i - j + 1;
+                if (dp[j][i] && i - j + 1 > ans.length()) {
+                    ans = s.substring(j, i + 1);
                 }
             }
         }
         
-        return s.substring(start, start + len);
+        return ans;
     }
 }
