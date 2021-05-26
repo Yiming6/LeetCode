@@ -14,12 +14,7 @@
  * }
  */
 class Solution {
-    /*
-        Bottom to top. Count the net total coins that a node can give or need.
-    */
-    
     int ans;
-    
     public int distributeCoins(TreeNode root) {
         if (root == null) return 0;
         
