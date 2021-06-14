@@ -14,51 +14,53 @@
  * }
  */
 class Solution {
-    /*
-        Level order traversal + indexing tree nodes.
-        Note that values in the same position should be sorted.
-    */
     public List<List<Integer>> verticalTraversal(TreeNode root) {
         if (root == null) return new ArrayList<>();
         
-        // level order traversal
-        List<List<Pair<TreeNode, Integer>>> tree = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
         
-        queue.add(new Pair<>(root, 0));
+        List<List<Pair<TreeNode, Integer>>> tree = new ArrayList<>();
+        
+        queue.add(new Pair(root, 0));
+        
         while (!queue.isEmpty()) {
             List<Pair<TreeNode, Integer>> list = new ArrayList<>();
+            
             for (int i = queue.size(); i > 0; i--) {
                 Pair<TreeNode, Integer> curr = queue.poll();
+                
                 TreeNode node = curr.getKey();
                 int coor = curr.getValue();
                 
-                list.add(curr);
-                if (node.left != null) queue.add(new Pair<>(node.left, coor - 1));
-                if (node.right != null) queue.add(new Pair<>(node.right, coor + 1));
+                list.add(new Pair(node, coor));
+                
+                if (node.left != null) queue.add(new Pair(node.left, coor - 1));
+                if (node.right != null) queue.add(new Pair(node.right, coor + 1));
             }
+            
             tree.add(list);
         }
         
-        // build answer
-        List<List<Integer>> ans = new ArrayList<>();
         TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        
         for (List<Pair<TreeNode, Integer>> level : tree) {
-            // handle the case that same position but different value
-            Map<Integer, List<Integer>> sorted = new HashMap<>();
-            for (Pair<TreeNode, Integer> curr : level) {
-                TreeNode node = curr.getKey();
-                int coor = curr.getValue();
+            Map<Integer, List<Integer>> levelMap = new HashMap<>();
+            
+            for (Pair<TreeNode, Integer> pair : level) {
+                TreeNode node = pair.getKey();
+                int coor = pair.getValue();
                 
-                if (!sorted.containsKey(coor)) sorted.put(coor, new ArrayList<>());
-                sorted.get(coor).add(node.val);
+                if (!levelMap.containsKey(coor)) levelMap.put(coor, new ArrayList<>());
+                levelMap.get(coor).add(node.val);
             }
-            for (int key : sorted.keySet()) {
-                Collections.sort(sorted.get(key));
-                for (int val : sorted.get(key)) {
-                    if (!map.containsKey(key)) map.put(key, new ArrayList<>());
-                    map.get(key).add(val);
-                }
+            
+            for (int coor : levelMap.keySet()) {
+                if (levelMap.get(coor).size() > 1) 
+                    Collections.sort(levelMap.get(coor));
+                
+                if (!map.containsKey(coor)) map.put(coor, new ArrayList<>());
+                map.get(coor).addAll(levelMap.get(coor));
             }
         }
         
